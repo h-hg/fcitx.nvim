@@ -10,11 +10,16 @@ local function executable(cmd)
   return result ~= ""
 end
 
+-- check fcitx-remote (fcitx5-remote)
 local fcitx_cmd = ""
 if executable("fcitx-remote") then
   fcitx_cmd = "fcitx-remote"
 elseif executable("fcitx5-remote") then
   fcitx_cmd = "fcitx5-remote"
+end
+
+if fcitx_cmd == "" or vim.fn.exists("$DISPLAY") == 0 then
+  return
 end
 
 function _Fcitx2en()
@@ -45,3 +50,4 @@ vim.cmd[[
     au CmdlineLeave [/\?] :lua _Fcitx2en()
   augroup END
 ]]
+
