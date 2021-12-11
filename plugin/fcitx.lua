@@ -12,9 +12,9 @@ end
 
 -- check fcitx-remote (fcitx5-remote)
 local fcitx_cmd = ""
-if executable("fcitx-remote") then
+if vim.fn.executable("fcitx-remote") == 1 then
   fcitx_cmd = "fcitx-remote"
-elseif executable("fcitx5-remote") then
+elseif vim.fn.executable("fcitx5-remote") == 1 then
   fcitx_cmd = "fcitx5-remote"
 end
 
