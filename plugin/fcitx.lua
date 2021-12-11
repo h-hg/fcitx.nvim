@@ -18,7 +18,7 @@ elseif vim.fn.executable("fcitx5-remote") == 1 then
   fcitx_cmd = "fcitx5-remote"
 end
 
-if fcitx_cmd == "" or vim.fn.exists("$DISPLAY") == 0 then
+if fcitx_cmd == "" or (vim.fn.exists("$DISPLAY") == 0 and vim.fn.exists("$WAYLAND_DISPLAY") == 0) then
   return
 end
 
