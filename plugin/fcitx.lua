@@ -1,29 +1,20 @@
-local function get_execute_result(cmd)
-  local handle = io.popen(cmd)
-  local result = handle:read("*a")
-  handle:close()
-  return result
-end
-
-local function executable(cmd)
-  local result = get_execute_result(cmd)
-  return result ~= ""
-end
-
 -- check fcitx-remote (fcitx5-remote)
 local fcitx_cmd = ""
 if vim.fn.executable("fcitx-remote") == 1 then
   fcitx_cmd = "fcitx-remote"
 elseif vim.fn.executable("fcitx5-remote") == 1 then
   fcitx_cmd = "fcitx5-remote"
+else
+  return
 end
 
-if fcitx_cmd == "" or (vim.fn.exists("$DISPLAY") == 0 and vim.fn.exists("$WAYLAND_DISPLAY") == 0) then
+local os_name = vim.loop.os_uname().sysname
+if (os_name == 'Linux' or os_name == 'Unix') and vim.fn.exists("$DISPLAY") == 0 and vim.fn.exists("$WAYLAND_DISPLAY") == 0 then
   return
 end
 
 function _Fcitx2en()
-  local input_status = tonumber(get_execute_result(fcitx_cmd))
+  local input_status = tonumber(vim.fn.system(fcitx_cmd))
   if input_status == 2 then
     -- input_toggle_flag means whether to restore the state of fcitx
     vim.b.input_toggle_flag = true
@@ -50,4 +41,3 @@ vim.cmd[[
     au CmdlineLeave [/\?] :lua _Fcitx2en()
   augroup END
 ]]
-
