@@ -18,12 +18,12 @@ if (os_name == 'Linux' or os_name == 'Unix') and os.getenv('DISPLAY') == nil and
 end
 
 function _Fcitx2en()
-  local input_status = tonumber(vim.fn.system(fcitx_cmd))
+  local input_status = tonumber(vim.fn.system({ fcitx_cmd }))
   if input_status == 2 then
     -- input_toggle_flag means whether to restore the state of fcitx
     vim.b.input_toggle_flag = true
     -- switch to English input
-    vim.fn.system(fcitx_cmd .. ' -c')
+    vim.fn.system({ fcitx_cmd, '-c' })
   end
 end
 
@@ -41,7 +41,7 @@ function _Fcitx2NonLatin()
     vim.b.input_toggle_flag = false
   elseif vim.b.input_toggle_flag == true then
     -- switch to Non-Latin input
-    vim.fn.system(fcitx_cmd .. ' -o')
+    vim.fn.system({ fcitx_cmd, '-o' })
     vim.b.input_toggle_flag = false
   end
 end
